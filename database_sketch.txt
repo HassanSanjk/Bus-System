@@ -1,0 +1,40 @@
+users (id, name, email, password, role)
+
+CREATE TABLE users{
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30),
+    email VARCHAR(50) UNIQUE,
+    password VARCHAR(255),
+    role VARCHAR(20)
+}
+
+buses (id, bus_number, total_seats)
+
+CREATE TABLE busses{
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    bus_number VARCHAR(20),
+    total_seats INT
+}
+
+routes (id, bus_id, from_city, to_city, date, time)
+
+CREATE TABLE routes{
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    bus_id INT,
+    from_city VARCHAR(20),
+    to_city VARCHAR(20),
+    departure DATETIME,
+    FOREIGN KEY (bus_id) REFERENCES buses(id) ON DELETE CASCADE
+}
+
+bookings (id, user_id, bus_id, seat_number, status)
+
+CREATE TABLE bookings{
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    bus_id INT,
+    seat_number INT,
+    status VARCHAR(10),
+    FOREIGN KEY (bus_id) REFERENCES buses(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+}
