@@ -7,4 +7,12 @@
 {% block body %}
     <h1>Welcome to the dashboard {{ name }}</h1>
     <a href="{{ url_for('logout') }}">Logout</a>
+
+    <div class = "card mt-4 p-4">
+    <h2>Your Bookings</h2>
+    <table>
+        <tr><th>Bus Number</th><th>Seat Number</th></tr>
+    </table>
+        {% for booking in bookings %}
+    </div>
 {% endblock %}

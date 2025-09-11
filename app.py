@@ -31,6 +31,7 @@ def login():
         con.close()
 
         if user:
+            session["user_id"] = user[0]
             return redirect(url_for("dashboard", name = user[1]))
 
     return render_template('login.html')
@@ -58,6 +59,8 @@ def signup():
 
 @app.route('/dashboard/<name>')
 def dashboard(name):
+    if 'user_id' not in session:
+        return redirect('/login')
     return render_template('dashboard.html', name = name)
 
 
