@@ -70,16 +70,53 @@ def logout():
     return redirect(url_for('login'))
 
 
+
+@app.route('/drivers', methods = ['GET','POST'])
+def drivers():
+    if 'user_id' not in session:
+        return redirect('/login')
+    if request.method == 'POST':
+        name = request.form['name']
+        license_number = request.form['license_number']
+        phone = request.form['phone']
+        experience = request.form['experience']
+        status = request.form['status']
+
+        con = db_connection()
+        cursor = con.cursor()
+        cursor.execute("INSERT INTO drivers (name, license_number, phone, experience, status) VALUES (%s, %s, %s, %s, %s)", (name, license_number, phone, experience, status))
+        con.commit()
+        con.close()
+
+    con = db_connection()
+    cursor = con.cursor(dictionary = True)
+    cursor.execute("SELECT * FROM users WHERE role = 'driver'")
+    drivers = cursor.fetchall()
+    con.close()
+
+    return render_template('drivers.html', drivers = drivers)
+
 @app.route('/add_bus', methods = ['GET','POST'])
 def add_bus():
     if 'user_id' not in session:
         return redirect('/login')
 
 
-@app.route('/add_route', methods = ['GET','POST'])
+@app.route('/routes', methods = ['GET','POST'])
 def add_route():
     if 'user_id' not in session:
         return redirect('/login')
+    if request.method == 'POST':
+        start = request.form['start']
+        destination = request.form['destination']
+        distance = request.form['distance']
+        travel_time = request.form['travel_time']
+
+        con = db_connection()
+        cursor = con.cursor()
+        cursor.execute("INSERT INTO routes (start, destination, distance_km, travel_time) VALUES (%s, %s, %s, %s)", (start, destination, distance, travel_time))
+        con.commit()
+        con.close()
 
 
 @app.route('/add_schedule', methods = ['GET','POST'])
