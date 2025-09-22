@@ -27,18 +27,18 @@ def login():
         con = db_connection()
         cursor = con.cursor()
         cursor.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, password))
-        user = cursor.fetchone()
+        user = cursor.fetchone(dictionary = True)
         con.close()
 
         if user:
-            session["user_id"] = user[0]
-            return redirect(url_for("dashboard", name = user[1]))
+            session["user_id"] = user['id']
+            return redirect(url_for("dashboard", name = user['name']))
 
     return render_template('login.html')
 
 
-@app.route('/signup', methods = ['POST','GET'])
-def signup():
+@app.route('/register', methods = ['POST','GET'])
+def register():
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
@@ -54,7 +54,7 @@ def signup():
 
         return redirect(url_for("login"))
 
-    return render_template('signup.html')
+    return render_template('register.html')
 
 
 @app.route('/dashboard/<name>')
@@ -63,6 +63,41 @@ def dashboard(name):
         return redirect('/login')
     return render_template('dashboard.html', name = name)
 
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
+@app.route('/add_bus', methods = ['GET','POST'])
+def add_bus():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+
+@app.route('/add_route', methods = ['GET','POST'])
+def add_route():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+
+@app.route('/add_schedule', methods = ['GET','POST'])
+def add_schedule():
+    if 'user_id' not in session:
+        return redirect('/login')
+    
+
+@app.route('/book', methods = ['GET','POST'])
+def book():
+    if 'user_id' not in session:
+        return redirect('/login')
+    
+#payment
+@app.route('/payment', methods = ['GET', 'POST'])
+def payment():
+    if 'user_id' not in session:
+        return redirect('/login')
 
 
 if __name__ == '__main__':
