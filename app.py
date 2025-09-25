@@ -141,7 +141,7 @@ def add_schedule():
         cursor.execute("INSERT INTO schedules (bus_id, route_id, departure_time, arriving_time, price) VALUES (%s, %s, %s, %s, %s)", (bus_id, route_id, departure_time, arriving_time, price))
         con.commit()
         con.close()
-        
+
     con = db_connection()
     cursor = con.cursor(dictionary = True)
     cursor.execute("SELECT * FROM schedules")
@@ -149,10 +149,69 @@ def add_schedule():
     con.close()
     return render_template('schedules.html', schedules = schedules)
 
-@app.route('/book', methods = ['GET','POST'])
-def book():
+@app.route('/bookings', methods = ['GET','POST'])
+def bookings():
     if 'user_id' not in session:
         return redirect('/login')
+    if request.method == 'POST':
+        user_id = session['user_id']
+        schedule_id = request.form['schedule_id']
+        seat_number = request.form['seat_number']
+        status = 'booked'
+        booking_time = request.form['booking_time']
+
+        con = db_connection()
+        cursor = con.cursor()
+        cursor.execute("INSERT INTO bookings (user_id, schedule_id, seat_number, status, booking_time) VALUES (%s, %s, %s, %s, %s)", (user_id, schedule_id, seat_number, status, booking_time))
+        con.commit()
+        con.close()
+
+    con = db_connection()
+    cursor = con.cursor(dictionary = True)
+    cursor.execute("SELECT * FROM bookings")
+    bookings = cursor.fetchall()
+    con.close()
+
+    return render_template('bookings.html', bookings = bookings)
+
+@app.route("/bookings/delete/<int:booking_id>")
+def cancel_booking(booking_id):
+    if 'user_id' not in session:
+        return redirect('/login')
+    
+    con = db_connection()
+    cursor = con.cursor()
+    cursor.execute("UPDATE bookings SET status = 'cancelled' WHERE id = %s AND user_id = %s", (booking_id, session['user_id']))
+    con.commit()
+    con.close()
+
+    return redirect(url_for('bookings'))
+
+@app.route('/busses', methods = ['GET', 'POST'])
+def busses():
+    if 'user_id' not in session:
+        return redirect('/login')
+    if request.method == 'POST':
+        bus_number = request.form['bus_number']
+        seats_number = request.form['seats_number']
+        colour = request.form['colour']
+        driver_id = request.form['driver_id']
+
+        con = db_connection()
+        cursor = con.cursor()
+        cursor.execute("INSERT INTO busses (bus_number, seats_number, colour, driver_id) VALUES (%s, %s, %s, %s)", (bus_number, seats_number, colour, driver_id))
+        con.commit()
+        con.close()
+
+    con = db_connection()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM busses")
+    busses = cursor.fetchall()
+    con.close()
+
+    return render_template('busses.html', busses = busses)
+
+@app.route('/')
     
 #payment
 @app.route('/payment', methods = ['GET', 'POST'])
