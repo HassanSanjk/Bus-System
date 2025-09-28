@@ -1,5 +1,4 @@
-from mysql import connector as mysql
-
+import mysql.connector
 def db_connection():
     return mysql.connector.connect(
         host = "localhost",

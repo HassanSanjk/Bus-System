@@ -5,9 +5,17 @@
 {% endblock %}
 
 {% block body %}
+<div class="blue-page text-center">
     <h1>Welcome to the Bus Ticketing System</h1>
     <p>Making your journey easier and more convenient.</p>
     <br>
-    <a class="btn btn-primary" href="/login">Login</a>
-    <a class="btn btn-primary" href="/register">Register</a>
+    <div class="container-fluid mx-4 mb-4">
+        <img src="{{ url_for('static', filename='images/bus.png') }}" class="small-image" alt="Bus illustration" class="img-fluid">
+    </div>
+    <br>
+    <div class="button-container mt-4">
+        <a class="btn btn-primary" href="/login">Login</a>
+        <a class="btn btn-primary" href="/register">Register</a>
+    </div>
+</div>
 {% endblock %}

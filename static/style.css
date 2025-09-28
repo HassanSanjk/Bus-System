@@ -1,0 +1,14 @@
+body{
+    background-color: #f5f0e6;
+    font-family: Arial, sans-serif;
+}
+
+.blue-page {
+    background-color: #2aadff;
+    min-height: 100vh;
+}
+
+.small-image {
+    width: 300px;
+    height: auto;
+}
