@@ -19,7 +19,10 @@ def login():
         if user and check_password_hash(user['password'], password):
             session["user_id"] = user['id']
             session["name"] = user['name']
-            return redirect(url_for("views.dashboard"))
+            if user['role'] == 'admin':
+                return redirect(url_for("views.admin"))
+            else:
+                return redirect(url_for("views.dashboard"))
         else:
             flash("Invalid credentials", "danger")
             return redirect(url_for("auth.login"))

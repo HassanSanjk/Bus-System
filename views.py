@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, session, Blueprint, request, url_for
+from flask import Flask, app, render_template, redirect, session, Blueprint, request, url_for
 from db import db_connection
 views_bp = Blueprint('views', __name__)
 
@@ -15,17 +15,17 @@ def dashboard():
     db = db_connection()
     cursor = db.cursor(dictionary=True)
     cursor.execute("""select r.start as start,
-r.destination as destination,
-s.departure_time as departure_time,
-b.bus_number as bus_number,
-bk.seat_number as seat_number,
-bk.status as status
-from bookings bk
-join schedules s on bk.schedule_id = s.id
-join routes r on s.route_id = r.id
-join buses b on s.bus_id = b.id
-where bk.user_id = %s and s.departure_time > NOW()
-order by s.departure_time;""" , (session["user_id"],))
+                    r.destination as destination,
+                    s.departure_time as departure_time,
+                    b.bus_number as bus_number,
+                    bk.seat_number as seat_number,
+                    bk.status as status
+                    from bookings bk
+                    join schedules s on bk.schedule_id = s.id
+                    join routes r on s.route_id = r.id
+                    join buses b on s.bus_id = b.id
+                    where bk.user_id = %s and s.departure_time > NOW()
+                    order by s.departure_time;""" , (session["user_id"],))
     upcoming_bookings = cursor.fetchall()
     db.close()
 
@@ -37,21 +37,52 @@ def add_booking():
     if 'user_id' not in session:
         return redirect('/login')
     if request.method == 'POST':
-        title = request.form['title']
-        due_date = request.form['due_date']
-
+        dropdown = request.form['dropdown']
         db = db_connection()
         cursor = db.cursor()
         cursor.execute("INSERT INTO bookings (user_id, schedule_id, seat_number, status, booking_time) VALUES (%s, %s, %s, %s, NOW())",(session['user_id'], title, due_date))
         db.commit()
         db.close()
 
-        return redirect(url_for('views.dashboard'))
+        return redirect(url_for('views.payment', booking_id=cursor.lastrowid))
 
     db = db_connection()
     cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM schedules WHERE departure_time > NOW()")
+    cursor.execute("""select b.bus_number as bus_number, s.id as schedule_id,
+                    r.id as route_id, r.start as start, r.destination as destination,
+                    s.id as schedule_id, s.departure_time as departure_time,
+                    s.arriving_time as arriving_time,
+                    s.price as price from routes r 
+                    join schedules s on s.route_id = r.id
+                    join buses b on s.bus_id = b.id
+                    where s.departure_time > NOW();
+                    """)
     schedules = cursor.fetchall()
     db.close()
 
     return render_template('add_booking.html', schedules=schedules)
+
+
+@views_bp.route('/payment/<int:booking_id>', methods=['GET', 'POST'])
+def payment(booking_id):
+    pass
+
+
+
+@views_bp.route('/admin')
+def admin():
+    return render_template('admin.html', name = session['name'])
+
+@views_bp.route('/manage_schedules')
+def manage_schedules():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    db = db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM schedules")
+    schedules = cursor.fetchall()
+    db.close()
+
+    return render_template('manage_schedules.html', schedules=schedules)
+

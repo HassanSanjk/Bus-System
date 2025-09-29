@@ -6,5 +6,8 @@
 
 {% block body %}
     <h1>Welcome to the Admin Dashboard</h1>
-    <p>Here you can manage users, view reports, and configure settings.</p>
+    <div class="button-container mt-4">
+        <a class="btn btn-primary" href="{{ url_for('views.manage_schedules') }}">Manage Schedules</a>
+        <a class="btn btn-primary" href="{{ url_for('views.manage_routes') }}">Manage Routes</a>
+    </div>
 {% endblock %}

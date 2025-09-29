@@ -12,12 +12,24 @@
         </button>
         <ul class="dropdown-menu">
             {% for schedule in schedules %}
-            <li><a class="dropdown-item" >{{ schedule.id }}</a></li>
+            <li><a class="dropdown-item" >{{ schedule.schedule_id }}: {{ schedule.start }} to {{ schedule.destination }} | {{schedule.departure_time }} | {{ schedule.arriving_time }} | {{ schedule.price }}</a></li>
             {% endfor %}
         </ul>
     </div>
-    <input class="form-control mb-2" type="text" name="title" placeholder="Booking Title" required>
-    <input class="form-control mb-2" type="date" name="due_date" placeholder="Due Date" required></textarea>
-    <button class="btn btn-primary">Save</button>
+    <div class="card mb-2">
+        <div class="card-body ">
+            <h5>Payment</h5>
+            <label for="card_number">Card Number:</label>
+            <input class="form-control" type="text" name="card_number" placeholder="Card Number" required>
+            <label for="expiration_date">Expiration Date:</label>
+            <input class="form-control" type="text" name="expiration_date" placeholder="MM/YY" required>
+            <label for="cvv">CVV:</label>
+            <input class="form-control" type="text" name="cvv" placeholder="CVV" required>
+            <label for="cardholder_name">Cardholder Name:</label>
+            <input class="form-control" type="text" name="cardholder_name" required>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit" >Book</button>
 </form>
 {%endblock%}
