@@ -5,14 +5,36 @@
 {% endblock %}
 
 {% block body %}
+<div class="blue-page text-center">
+    
     <h1>Welcome to the dashboard {{ name }}</h1>
-    <a href="{{ url_for('logout') }}">Logout</a>
 
-    <div class = "card mt-4 p-4">
-    <h2>Your Bookings</h2>
-    <table>
-        <tr><th>Bus Number</th><th>Seat Number</th></tr>
+    <h2 class="btn btn-primary mt-5 mb-3" href="{{ url_for('views.add_booking') }}">book a trip</h2>
+    <h2 class="btn btn-secondary mt-5" href="{{ url_for('views.bookings') }}">manage your bookings</h2>
+
+    <br>
+    {% if not upcoming_bookings %}
+    <p>No bookings yet</p>
+    {% endif %}
+    {% for booking in bookings %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Route</th>
+                <th>Departure Date and Time</th>
+                <th>Bus Number and Seat Number</th>
+                <th>Booking Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr></tr>
+                <td>{{ upcoming_bookings['start'] }} - {{ upcoming_bookings['destination'] }}</td>
+                <td>{{ upcoming_bookings['departure_time'] }}</td>
+                <td>{{ upcoming_bookings['bus_number'] }} - {{ upcoming_bookings['seat_number'] }}</td>
+                <td>{{ upcoming_bookings['status'] }}</td>
+            </tr>
+        </tbody>
     </table>
-        {% for booking in bookings %}
-    </div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -12,3 +12,29 @@ body{
     width: 300px;
     height: auto;
 }
+
+.bus {
+    display: grid;
+    grid-template-columns: repeat(4, 60px);
+    gap: 10px;
+    width: fit-content;
+    margin: 20px auto;
+}
+.seat {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.seat.selected {
+    background-color: #4caf50;
+    color: white;
+}
+.seat.reserved {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

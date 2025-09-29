@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}<title>Add a Booking</title>{%endblock%}
+
+{% block body %}
+<h2>Add a new booking</h2>
+
+<form method="POST">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Choose Schedule
+        </button>
+        <ul class="dropdown-menu">
+            {% for schedule in schedules %}
+            <li><a class="dropdown-item" >{{ schedule.id }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <input class="form-control mb-2" type="text" name="title" placeholder="Booking Title" required>
+    <input class="form-control mb-2" type="date" name="due_date" placeholder="Due Date" required></textarea>
+    <button class="btn btn-primary">Save</button>
+</form>
+{%endblock%}

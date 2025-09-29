@@ -18,7 +18,8 @@ def login():
 
         if user and check_password_hash(user['password'], password):
             session["user_id"] = user['id']
-            return redirect(url_for("dashboard", name = user['name']))
+            session["name"] = user['name']
+            return redirect(url_for("views.dashboard"))
         else:
             flash("Invalid credentials", "danger")
             return redirect(url_for("auth.login"))
@@ -32,8 +33,10 @@ def register():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password1']
+        password2 = request.form['password2']
         phone = request.form['phone']
-        hased_password = generate_password_hash(password,)
+        hashed_password = generate_password_hash(password)
+
 
         con = db_connection()
         cursor = con.cursor()
@@ -41,17 +44,28 @@ def register():
         user = cursor.fetchone()
         con.close()
 
+        print(user)
+
         if user:
-            flash("Email already exists", "danger")
-            return redirect(url_for("auth.register"))
-
-        con = db_connection()
-        cursor = con.cursor()
-        cursor.execute("INSERT INTO users (name, email, password, phone, role) VALUES (%s, %s, %s, %s, 'user')", (name, email, hased_password, phone))
-        con.commit()
-        con.close()
-
-        return redirect(url_for("login"))
+            flash("Email already exists", category="error")
+        elif len(email) <4:
+            flash("Email must be greater than 3 characters", category="error")
+        elif len(name) <2:
+            flash("Name must be greater than 1 character", category="error")
+        elif password != password2:
+            flash("Passwords don't match", category="error")
+        elif len(password) <8:
+            flash("Password must be at least 8 characters", category="error")
+        elif len(phone) <10:
+            flash("Phone number must be at least 10 characters", category="error")
+        else:
+            con = db_connection()
+            cursor = con.cursor()
+            cursor.execute("INSERT INTO users (name, email, password, phone, role) VALUES (%s, %s, %s, %s, 'user')", (name, email, hashed_password, phone))
+            con.commit()
+            con.close()
+            flash("Account created!", category="success")
+            return redirect(url_for("auth.login"))
 
     return render_template('register.html')
 
