@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}<title>Add Route</title>{%endblock%}
+
+{% block body %}
+<h2>Add a new driver</h2>
+
+<form method="POST">
+    Name
+    license number
+    phone
+    experience
+    status
+    <input class="form-control mb-2" type="text" name="name" placeholder="Name" required>
+    <input class="form-control mb-2" type="text" name="license_number" placeholder="License Number" required>
+    <input class="form-control mb-2" type="text" name="phone_number" placeholder="Phone" required>
+    <input class="form-control mb-2" type="number" name="experience" placeholder="Experience Years (Number)" required>
+    <input class="form-control mb-2" type="text" name="status" placeholder="Status" required>
+
+    <button class="btn btn-primary">Add Driver</button>
+</form>
+{%endblock%}

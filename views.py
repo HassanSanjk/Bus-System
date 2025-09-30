@@ -32,6 +32,27 @@ def dashboard():
     return render_template('dashboard.html', name = session['name'], upcoming_bookings = upcoming_bookings)
 
 
+
+@views_bp.route('/bookings')
+def bookings():
+    if 'user_id' not in session:
+        return redirect('/login')
+    
+    db = db_connection()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("""select b.bus_number as bus_number, s.id as schedule_id,
+                    r.id as route_id, r.start as start, r.destination as destination,
+                    s.id as schedule_id, s.departure_time as departure_time,
+                    s.arriving_time as arriving_time,
+                    s.price as price from routes r 
+                    join schedules s on s.route_id = r.id
+                    join buses b on s.bus_id = b.id
+                    where s.departure_time > NOW();""")
+    bookings = cursor.fetchall()
+    db.close()
+
+    return render_template('bookings.html', bookings=bookings)
+
 @views_bp.route('/add_booking', methods=['GET', 'POST'])
 def add_booking():
     if 'user_id' not in session:
@@ -40,7 +61,7 @@ def add_booking():
         dropdown = request.form['dropdown']
         db = db_connection()
         cursor = db.cursor()
-        cursor.execute("INSERT INTO bookings (user_id, schedule_id, seat_number, status, booking_time) VALUES (%s, %s, %s, %s, NOW())",(session['user_id'], title, due_date))
+        cursor.execute("INSERT INTO bookings (user_id, schedule_id, seat_number, status, booking_time) VALUES (%s, %s, %s, %s, NOW())",(session['user_id'], dropdown, 'A1', 'booked'))
         db.commit()
         db.close()
 
@@ -62,27 +83,13 @@ def add_booking():
 
     return render_template('add_booking.html', schedules=schedules)
 
-
-@views_bp.route('/payment/<int:booking_id>', methods=['GET', 'POST'])
-def payment(booking_id):
-    pass
-
-
-
-@views_bp.route('/admin')
-def admin():
-    return render_template('admin.html', name = session['name'])
-
-@views_bp.route('/manage_schedules')
-def manage_schedules():
+@views_bp.route('/delete_booking/<int:booking_id>')
+def delete_booking(booking_id):
     if 'user_id' not in session:
         return redirect('/login')
-
     db = db_connection()
-    cursor = db.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM schedules")
-    schedules = cursor.fetchall()
-    db.close()
-
-    return render_template('manage_schedules.html', schedules=schedules)
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM bookings WHERE id = %s AND user_id = %s", (booking_id, session['user_id']))
+    db.commit()
+    return redirect(url_for('views.bookings'))
 

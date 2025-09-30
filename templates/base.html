@@ -14,11 +14,21 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" id="dashboard" href="/dashboard">Dashboard</a>
-        <a class="nav-item nav-link" id="buses" href="/buses">Buses</a>
-        <a class="nav-item nav-link" id="routes" href="/routes">Routes</a>
-        <a class="nav-item nav-link" id="schedules" href="/schedules">Schedules</a>
-        <a class="nav-item nav-link" id="bookings" href="/bookings">Bookings</a>
+        {% if session.get('role') == 'admin' %}
+        <a class="nav-item nav-link" id="buses" href="{{ url_for('admin.buses') }}">Buses</a>
+        <a class="nav-item nav-link" id="routes" href="{{ url_for('admin.routes') }}">Routes</a>
+        <a class="nav-item nav-link" id="schedules" href="{{ url_for('admin.schedules') }}">Schedules</a>
+        <a class="nav-item nav-link" id="drivers" href="{{ url_for('admin.drivers') }}">Drivers</a>
+        {% elif session.get('role') == 'user' %}
+        <a class="nav-item nav-link" id="bookings" href="{{ url_for('views.bookings') }}">My Bookings</a>
+        <a class="nav-item nav-link" id="dashboard" href="{{ url_for('views.dashboard') }}">Dashboard</a>
+        {% endif %}       
+        {% if session.get('user_id') %}
+        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+        {% else %}
+        <a class="nav-item nav-link" id="login" href="{{ url_for('auth.login') }}">Login</a>
+        <a class="nav-item nav-link" id="signUp" href="{{ url_for('auth.register') }}">register</a>
+        {% endif %}
       </div>
     </div>
   </nav>

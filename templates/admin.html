@@ -7,7 +7,9 @@
 {% block body %}
     <h1>Welcome to the Admin Dashboard</h1>
     <div class="button-container mt-4">
-        <a class="btn btn-primary" href="{{ url_for('views.manage_schedules') }}">Manage Schedules</a>
-        <a class="btn btn-primary" href="{{ url_for('views.manage_routes') }}">Manage Routes</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.schedules') }}">Manage Schedules</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.routes') }}">Manage Routes</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.buses') }}">Manage Buses</a>
+        <a class="btn btn-primary" href="{{ url_for('admin.drivers') }}">Manage Drivers</a>
     </div>
 {% endblock %}

@@ -9,8 +9,8 @@
     
     <h1>Welcome to the dashboard {{ name }}</h1>
 
-    <h2 class="btn btn-primary mt-5 mb-3" href="{{ url_for('views.add_booking') }}">book a trip</h2>
-    <h2 class="btn btn-secondary mt-5" href="{{ url_for('views.bookings') }}">manage your bookings</h2>
+    <a class="btn btn-primary mt-5 mb-3" href="{{ url_for('views.add_booking') }}">book a trip</a>
+    <a class="btn btn-secondary mt-5 mb-3" href="{{ url_for('views.bookings') }}">manage your bookings</a>
 
     <br>
     {% if not upcoming_bookings %}

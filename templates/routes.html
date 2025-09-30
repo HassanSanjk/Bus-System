@@ -10,7 +10,7 @@
 <div class="card mb-2">
     <div class="card-body ">
         <h5>{{ route['start'] }} -----> {{ route['destination'] }}</h5>
-        <p>{{ route['distance'] }}KM  |  {{ route['duration'] }}hour trip</p>
+        <p>{{ route['distance_km'] }} KM  |  {{ route['travel_time']//60 }}:{{ '%02d' % (route['travel_time']%60) }} hour trip</p>
         <a class="btn-danger btn-sm" href="/delete_route/{{route['id']}}">Delete</a>
     </div>
 </div>

@@ -19,8 +19,9 @@ def login():
         if user and check_password_hash(user['password'], password):
             session["user_id"] = user['id']
             session["name"] = user['name']
-            if user['role'] == 'admin':
-                return redirect(url_for("views.admin"))
+            session["role"] = user['role']
+            if session['role'] == 'admin':
+                return redirect(url_for("admin.settings"))
             else:
                 return redirect(url_for("views.dashboard"))
         else:
@@ -75,4 +76,4 @@ def register():
 @auth_bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))

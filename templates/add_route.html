@@ -3,16 +3,14 @@
 {% block head %}<title>Add Route</title>{%endblock%}
 
 {% block body %}
-<h2>Add new route</h2>
+<h2>Add a new route</h2>
 
 <form method="POST">
     <input class="form-control mb-2" type="text" name="start" placeholder="Start Location" required>
     <input class="form-control mb-2" type="text" name="destination" placeholder="Destination" required>
     <input class="form-control mb-2" type="number" name="distance" placeholder="Distance (KM)" required>
-    <input class="form-control mb-2" type="text" name="duration" placeholder="Duration (Hours)" required>
-    <input class="form-control mb-2" type="text" name="duration" placeholder="Duration (Minutes)" required>
-
-    
+    <input class="form-control mb-2" type="number" name="duration_hours" placeholder="Duration (Hours)" required>
+    <input class="form-control mb-2" type="number" name="duration_minutes" placeholder="Duration (Minutes)" required>
     <button class="btn btn-primary">Add route</button>
 </form>
 {%endblock%}

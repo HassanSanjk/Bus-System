@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %}<title>Routes</title>{%endblock%}
+
+{% block body %} 
+<h2>Buses</h2>
+<a class= "btn btn-success mb-3" href="{{ url_for('admin.add_bus') }}">Add Bus</a>
+{% if buses == [] %}<p>No buses yet</p>{% endif %}
+{% for bus in buses %}
+<div class="card mb-2">
+    <div class="card-body ">
+        <h5>{{ bus['bus_number'] }}</h5>
+        <p>{{ bus['seats_number'] }}  |  {{ bus['colour'] }}  |  {{ bus['driver_id'] }}</p>
+        <a class="btn-danger btn-sm" href="/delete_bus/{{bus['id']}}">Delete</a>
+    </div>
+</div>
+{% endfor %}
+
+{%endblock%}

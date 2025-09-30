@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}<title>Add Bus</title>{%endblock%}
+
+{% block body %}
+<h2>Add a new Bus</h2>
+
+<form method="POST">
+    <input class="form-control mb-2" type="text" name="bus_number" placeholder="Bus Number" required>
+    <input class="form-control mb-2" type="text" name="seats_number" placeholder="Seats Number" required>
+    <input class="form-control mb-2" type="text" name="colour" placeholder="Colour" required>
+    <input class="form-control mb-2" type="text" name="driver_id" placeholder="Driver ID" required>
+
+    <button class="btn btn-primary">Add Bus</button>
+</form>
+{%endblock%}

@@ -3,10 +3,10 @@
 {% block head %}<title>Routes</title>{%endblock%}
 
 {% block body %} 
-<h2>Routes</h2>
-<a class= "btn btn-success mb-3" href="{{ url_for('admin.add_schedule') }}">Add Route</a>
-{% if routes == [] %}<p>No routes yet</p>{% endif %}
-{% for route in routes %}
+<h2>Schedules</h2>
+<a class= "btn btn-success mb-3" href="{{ url_for('admin.add_schedule') }}">Add Schedule</a>
+{% if schedules == [] %}<p>No schedules yet</p>{% endif %}
+{% for schedule in schedules %}
 <div class="card mb-2">
     <div class="card-body ">
         <h5>{{ schedule['bus_number'] }}</h5>

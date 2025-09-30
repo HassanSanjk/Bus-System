@@ -5,14 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Login to Your Account</h1>
-    <form method = "POST" >
-        <label for="email">Email:</label>
-        <input type="email" id = "email" name = "email" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id = "password" name = "password" required>
-        <br>
-        <button type="submit">Login</button>
-    </form>
+<h2>Bookings</h2>
+<a class= "btn btn-success mb-3" href="{{ url_for('views.add_booking') }}">Book a trip</a>
+{% if bookings == [] %}<p>No bookings yet</p>{% endif %}
+{% for booking in bookings %}
+<div class="card mb-2">
+    <div class="card-body ">
+        <h5>{{ booking['start'] }} -----> {{ booking['destination'] }}</h5>
+        <p>departing at:{{ booking['departure_time'] }}  |  arriving at:{{ booking['arriving_time'] }}  |  price:{{ booking['price'] }}</p>
+        <a class="btn-danger btn-sm" href="/delete_booking/{{booking['id']}}">Delete</a>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
