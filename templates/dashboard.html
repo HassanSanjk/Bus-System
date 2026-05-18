@@ -16,7 +16,7 @@
     {% if not upcoming_bookings %}
     <p>No bookings yet</p>
     {% endif %}
-    {% for booking in bookings %}
+    {% for booking in upcoming_bookings %}
     <table class="table">
         <thead>
             <tr>
@@ -28,10 +28,10 @@
         </thead>
         <tbody>
             <tr></tr>
-                <td>{{ upcoming_bookings['start'] }} - {{ upcoming_bookings['destination'] }}</td>
-                <td>{{ upcoming_bookings['departure_time'] }}</td>
-                <td>{{ upcoming_bookings['bus_number'] }} - {{ upcoming_bookings['seat_number'] }}</td>
-                <td>{{ upcoming_bookings['status'] }}</td>
+                <td>{{ booking['start'] }} - {{ booking['destination'] }}</td>
+                <td>{{ booking['departure_time'] }}</td>
+                <td>{{ booking['bus_number'] }} - {{ booking['seat_number'] }}</td>
+                <td>{{ booking['status'] }}</td>
             </tr>
         </tbody>
     </table>
